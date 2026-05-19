@@ -1854,9 +1854,12 @@ function updateCountdown() {
 // direkt aufgerufen werden darf — perfekt für Static Sites.
 
 const ESPN_ENDPOINTS = {
-  chiefs:  'https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/kc/news?limit=12',
+  // ?team=kc ist der korrekte Parameter fuer Team-gefilterte News
+  chiefs:  'https://site.api.espn.com/apis/site/v2/sports/football/nfl/news?team=kc&limit=12',
+  // Allgemeine NFL News (funktioniert bereits)
   nfl:     'https://site.api.espn.com/apis/site/v2/sports/football/nfl/news?limit=12',
-  mahomes: 'https://site.api.espn.com/apis/common/v3/sports/football/nfl/athletes/3139477/news?limit=12',
+  // Mahomes Athlete-ID: 3139477 — News-Filter ueber athlete-Param
+  mahomes: 'https://site.api.espn.com/apis/site/v2/sports/football/nfl/news?athlete=3139477&limit=12',
 };
 
 let currentNewsTab = 'chiefs';
