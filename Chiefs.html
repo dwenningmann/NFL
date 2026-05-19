@@ -43,7 +43,7 @@ body {
   font-family: 'Barlow', sans-serif;
   min-height: 100dvh;
   overflow-x: hidden;
-  padding-bottom: 80px; /* nav height */
+  padding-bottom: 80px;
 }
 
 /* ══ HERO HEADER ══ */
@@ -1044,6 +1044,64 @@ body {
   color: #fff;
 }
 
+
+/* ══ HISTORY TIMELINE ══ */
+.history-moment {
+  display: grid;
+  grid-template-columns: 44px 20px 1fr;
+  gap: 0 12px;
+  align-items: flex-start;
+  padding: 0 0 20px 0;
+  position: relative;
+}
+
+.hm-year {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.95rem;
+  color: var(--gold);
+  letter-spacing: 1px;
+  padding-top: 2px;
+  text-align: right;
+}
+
+.hm-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--gold);
+  margin-top: 4px;
+  position: relative;
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.history-moment::after {
+  content: '';
+  position: absolute;
+  left: 54px;
+  top: 16px;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, rgba(255,184,28,0.3), rgba(255,184,28,0.05));
+}
+
+.history-moment:last-child::after { display: none; }
+
+.hm-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.3;
+}
+
+.hm-desc {
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-top: 4px;
+}
+
 </style>
 </head>
 <body>
@@ -1162,20 +1220,209 @@ body {
 
 <!-- NEWS PAGE -->
 <div class="page" id="page-news">
-  <div class="section-title" style="margin-top:20px">NEWS & UPDATES</div>
-
-  <div class="news-tabs">
-    <button class="news-tab active" onclick="switchNewsTab('chiefs', this)">Chiefs</button>
-    <button class="news-tab" onclick="switchNewsTab('nfl', this)">NFL</button>
-    <button class="news-tab" onclick="switchNewsTab('mahomes', this)">Mahomes</button>
-  </div>
+  <div class="section-title" style="margin-top:20px">CHIEFS NEWS</div>
 
   <div id="newsContainer">
     <div class="news-loading">
       <div class="spinner"></div>
-      <div style="font-family:'Barlow Condensed';letter-spacing:1px;font-size:0.9rem">LADE NEWS...</div>
+      <div style="font-family:'Barlow Condensed';letter-spacing:1px;font-size:0.9rem">LADE CHIEFS NEWS...</div>
     </div>
   </div>
+</div>
+
+<!-- HISTORY PAGE -->
+<div class="page" id="page-history">
+  <div class="section-title" style="margin-top:20px">KINGDOM HISTORY</div>
+
+  <!-- Super Bowl Titles -->
+  <div class="roster-section">
+    <div class="roster-section-title">🏆 SUPER BOWL TITEL</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+
+      <div class="info-card" style="border-color:rgba(255,184,28,0.3);background:linear-gradient(90deg,rgba(255,184,28,0.06),var(--card))">
+        <div style="display:flex;align-items:center;gap:14px">
+          <div style="font-family:'Bebas Neue';font-size:2.5rem;color:var(--gold);line-height:1;min-width:52px;text-align:center">IV</div>
+          <div>
+            <div style="font-family:'Barlow Condensed';font-weight:800;font-size:1rem">Super Bowl IV · 1970</div>
+            <div style="font-size:0.78rem;color:var(--muted);margin-top:2px">Kansas City Chiefs 23 – 7 Minnesota Vikings</div>
+            <div style="font-size:0.7rem;color:var(--gold);margin-top:3px">Tulane Stadium · New Orleans, LA</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-card" style="border-color:rgba(255,184,28,0.3);background:linear-gradient(90deg,rgba(255,184,28,0.06),var(--card))">
+        <div style="display:flex;align-items:center;gap:14px">
+          <div style="font-family:'Bebas Neue';font-size:2.5rem;color:var(--gold);line-height:1;min-width:52px;text-align:center">LIV</div>
+          <div>
+            <div style="font-family:'Barlow Condensed';font-weight:800;font-size:1rem">Super Bowl LIV · 2020</div>
+            <div style="font-size:0.78rem;color:var(--muted);margin-top:2px">Kansas City Chiefs 31 – 20 San Francisco 49ers</div>
+            <div style="font-size:0.7rem;color:var(--gold);margin-top:3px">Hard Rock Stadium · Miami, FL · MVP: Patrick Mahomes</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-card" style="border-color:rgba(255,184,28,0.3);background:linear-gradient(90deg,rgba(255,184,28,0.06),var(--card))">
+        <div style="display:flex;align-items:center;gap:14px">
+          <div style="font-family:'Bebas Neue';font-size:2.5rem;color:var(--gold);line-height:1;min-width:52px;text-align:center">LVII</div>
+          <div>
+            <div style="font-family:'Barlow Condensed';font-weight:800;font-size:1rem">Super Bowl LVII · 2023</div>
+            <div style="font-size:0.78rem;color:var(--muted);margin-top:2px">Kansas City Chiefs 38 – 35 Philadelphia Eagles</div>
+            <div style="font-size:0.7rem;color:var(--gold);margin-top:3px">State Farm Stadium · Glendale, AZ · MVP: Patrick Mahomes</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-card" style="border-color:rgba(255,184,28,0.3);background:linear-gradient(90deg,rgba(255,184,28,0.06),var(--card))">
+        <div style="display:flex;align-items:center;gap:14px">
+          <div style="font-family:'Bebas Neue';font-size:2.5rem;color:var(--gold);line-height:1;min-width:52px;text-align:center">LVIII</div>
+          <div>
+            <div style="font-family:'Barlow Condensed';font-weight:800;font-size:1rem">Super Bowl LVIII · 2024</div>
+            <div style="font-size:0.78rem;color:var(--muted);margin-top:2px">Kansas City Chiefs 25 – 22 OT San Francisco 49ers</div>
+            <div style="font-size:0.7rem;color:var(--gold);margin-top:3px">Allegiant Stadium · Las Vegas, NV · MVP: Patrick Mahomes</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Mahomes Era Stats -->
+  <div class="roster-section">
+    <div class="roster-section-title">⚡ MAHOMES ERA (2018–2025)</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div class="stat-pill" style="background:var(--card);border:1px solid var(--border);padding:14px;border-radius:var(--radius-sm)">
+        <div class="num" style="font-size:2rem">283</div>
+        <div class="lbl">Touchdowns</div>
+      </div>
+      <div class="stat-pill" style="background:var(--card);border:1px solid var(--border);padding:14px;border-radius:var(--radius-sm)">
+        <div class="num" style="font-size:2rem">93–29</div>
+        <div class="lbl">Regular Season W-L</div>
+      </div>
+      <div class="stat-pill" style="background:var(--card);border:1px solid var(--border);padding:14px;border-radius:var(--radius-sm)">
+        <div class="num" style="font-size:2rem">19–6</div>
+        <div class="lbl">Playoff W-L</div>
+      </div>
+      <div class="stat-pill" style="background:var(--card);border:1px solid var(--border);padding:14px;border-radius:var(--radius-sm)">
+        <div class="num" style="font-size:2rem">3×</div>
+        <div class="lbl">SB MVP</div>
+      </div>
+      <div class="stat-pill" style="background:var(--card);border:1px solid var(--border);padding:14px;border-radius:var(--radius-sm)">
+        <div class="num" style="font-size:2rem">7×</div>
+        <div class="lbl">Pro Bowl</div>
+      </div>
+      <div class="stat-pill" style="background:var(--card);border:1px solid var(--border);padding:14px;border-radius:var(--radius-sm)">
+        <div class="num" style="font-size:2rem">2×</div>
+        <div class="lbl">NFL MVP</div>
+      </div>
+      <div class="stat-pill" style="background:var(--card);border:1px solid var(--border);padding:14px;border-radius:var(--radius-sm)">
+        <div class="num" style="font-size:2rem">9×</div>
+        <div class="lbl">AFC West Titel</div>
+      </div>
+      <div class="stat-pill" style="background:var(--card);border:1px solid var(--border);padding:14px;border-radius:var(--radius-sm)">
+        <div class="num" style="font-size:2rem">5×</div>
+        <div class="lbl">AFC Championship</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Timeline legendärer Momente -->
+  <div class="roster-section">
+    <div class="roster-section-title">📅 LEGENDÄRE MOMENTE</div>
+    <div style="display:flex;flex-direction:column;gap:0">
+
+      <div class="history-moment" data-year="1970">
+        <div class="hm-year">1970</div>
+        <div class="hm-dot"></div>
+        <div class="hm-text">
+          <div class="hm-title">Erster Super Bowl Titel</div>
+          <div class="hm-desc">23–7 gegen die Vikings. Len Dawson als MVP. Die Chiefs werden zur NFL-Franchise.</div>
+        </div>
+      </div>
+
+      <div class="history-moment" data-year="2000">
+        <div class="hm-year">2000</div>
+        <div class="hm-dot"></div>
+        <div class="hm-text">
+          <div class="hm-title">Priest Holmes übernimmt</div>
+          <div class="hm-desc">Holmes setzt NFL-Rekorde: 27 TDs in einer Saison (2003). KC dominiert die AFC West.</div>
+        </div>
+      </div>
+
+      <div class="history-moment" data-year="2013">
+        <div class="hm-year">2013</div>
+        <div class="hm-dot"></div>
+        <div class="hm-text">
+          <div class="hm-title">Andy Reid kommt — 11-0 Start</div>
+          <div class="hm-desc">Reid dreht ein 2-14-Team in 11 Siege in Folge. Beginn der neuen Ära in KC.</div>
+        </div>
+      </div>
+
+      <div class="history-moment" data-year="2017">
+        <div class="hm-year">2017</div>
+        <div class="hm-dot"></div>
+        <div class="hm-text">
+          <div class="hm-title">Mahomes als 1st-Round Pick</div>
+          <div class="hm-desc">Pick #10 aus Texas Tech. Die Chiefs trauen sich — und treffen den Jackpot der Generationen.</div>
+        </div>
+      </div>
+
+      <div class="history-moment" data-year="2018">
+        <div class="hm-year">2018</div>
+        <div class="hm-dot"></div>
+        <div class="hm-text">
+          <div class="hm-title">Mahomes: 50 TDs, NFL MVP mit 23</div>
+          <div class="hm-desc">Mahomes wirft in seinem ersten Starter-Jahr 50 Touchdowns. Jüngster MVP der NFL-Geschichte.</div>
+        </div>
+      </div>
+
+      <div class="history-moment" data-year="2020">
+        <div class="hm-year">2020</div>
+        <div class="hm-dot"></div>
+        <div class="hm-text">
+          <div class="hm-title">Super Bowl LIV — 50 Jahre Warten vorbei</div>
+          <div class="hm-desc">Nach 0–10 im dritten Viertel dreht Mahomes das Spiel gegen San Francisco. 31–20. Kingdom explodiert.</div>
+        </div>
+      </div>
+
+      <div class="history-moment" data-year="2023">
+        <div class="hm-year">2023</div>
+        <div class="hm-dot"></div>
+        <div class="hm-text">
+          <div class="hm-title">Super Bowl LVII — Thriller in Arizona</div>
+          <div class="hm-desc">38–35 gegen Philadelphia. Mahomes mit kaputtem Knöchel. Der erste von drei in vier Jahren.</div>
+        </div>
+      </div>
+
+      <div class="history-moment" data-year="2024">
+        <div class="hm-year">2024</div>
+        <div class="hm-dot"></div>
+        <div class="hm-text">
+          <div class="hm-title">Super Bowl LVIII — Back-to-Back in Vegas</div>
+          <div class="hm-desc">25–22 OT gegen die 49ers. Erster Back-to-Back-Champion seit den Patriots 2004. Mahomes in der Goat-Diskussion.</div>
+        </div>
+      </div>
+
+      <div class="history-moment" data-year="2025">
+        <div class="hm-year">2025</div>
+        <div class="hm-dot"></div>
+        <div class="hm-text">
+          <div class="hm-title">ACL-Verletzung — Das Kingdom wartet</div>
+          <div class="hm-desc">Mahomes reißt sich im November das Kreuzband. Die Chiefs enden 6–11. Aber das Kingdom glaubt: Er kommt zurück.</div>
+        </div>
+      </div>
+
+      <div class="history-moment" data-year="2026" style="opacity:1">
+        <div class="hm-year" style="color:var(--red)">2026</div>
+        <div class="hm-dot" style="background:var(--red);box-shadow:0 0 8px var(--red)"></div>
+        <div class="hm-text">
+          <div class="hm-title" style="color:var(--gold)">⚡ Die Rückkehr beginnt jetzt</div>
+          <div class="hm-desc">14. September 2026 — Arrowhead, MNF gegen Denver. Mahomes ist zurück. Das Kingdom glaubt an den 5. Ring.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
 </div>
 
 <!-- ROSTER PAGE -->
@@ -1652,6 +1899,12 @@ body {
     </svg>
     <span class="nav-label">News</span>
   </button>
+  <button class="nav-item" id="nav-history" onclick="switchPage('history', this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+    </svg>
+    <span class="nav-label">Historie</span>
+  </button>
   <button class="nav-item" id="nav-roster" onclick="switchPage('roster', this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
@@ -1853,48 +2106,34 @@ function updateCountdown() {
 // ESPN hat eine öffentliche JSON-API mit CORS-Headern die von Browsern
 // direkt aufgerufen werden darf — perfekt für Static Sites.
 
-const ESPN_ENDPOINTS = {
-  // ?team=kc ist der korrekte Parameter fuer Team-gefilterte News
-  chiefs:  'https://site.api.espn.com/apis/site/v2/sports/football/nfl/news?team=kc&limit=12',
-  // Allgemeine NFL News (funktioniert bereits)
-  nfl:     'https://site.api.espn.com/apis/site/v2/sports/football/nfl/news?limit=12',
-  // Mahomes Athlete-ID: 3139477 — News-Filter ueber athlete-Param
-  mahomes: 'https://site.api.espn.com/apis/site/v2/sports/football/nfl/news?athlete=3139477&limit=12',
-};
+const ESPN_CHIEFS_NEWS = 'https://site.api.espn.com/apis/site/v2/sports/football/nfl/news?team=kc&limit=15';
 
-let currentNewsTab = 'chiefs';
-const newsCache = {};
+let newsLoaded = false;
 
-async function loadNews(topic = 'chiefs') {
+async function loadNews() {
   const container = document.getElementById('newsContainer');
-
-  if (newsCache[topic]) { renderNewsItems(newsCache[topic], topic); return; }
+  if (newsLoaded) return;
 
   container.innerHTML = '<div class="news-loading"><div class="spinner"></div>'
-    + '<div style="font-family:\'Barlow Condensed\';letter-spacing:1px;font-size:0.9rem">LADE NEWS...</div></div>';
+    + '<div style="font-family:\'Barlow Condensed\';letter-spacing:1px;font-size:0.9rem">LADE CHIEFS NEWS...</div></div>';
 
   try {
-    const res = await fetch(ESPN_ENDPOINTS[topic], { signal: AbortSignal.timeout(8000) });
+    const res = await fetch(ESPN_CHIEFS_NEWS, { signal: AbortSignal.timeout(8000) });
     if (!res.ok) throw new Error('ESPN ' + res.status);
     const data = await res.json();
-
-    // ESPN returns { articles: [...] }
     const articles = data.articles || [];
     if (!articles.length) throw new Error('Keine Artikel');
-
-    newsCache[topic] = articles;
-    renderNewsItems(articles, topic);
-
+    newsLoaded = true;
+    renderNewsItems(articles);
   } catch(err) {
     console.warn('ESPN News error:', err);
-    container.innerHTML = renderFallbackNews(topic);
+    container.innerHTML = renderFallbackNews();
   }
 }
 
-function renderNewsItems(articles, topic) {
+function renderNewsItems(articles) {
   const container = document.getElementById('newsContainer');
-  const labels = { chiefs: 'ESPN · Chiefs', nfl: 'ESPN · NFL', mahomes: 'ESPN · Mahomes' };
-  const label = labels[topic] || 'ESPN';
+  const label = 'ESPN · Chiefs';
 
   let html = '<div class="news-container">';
 
@@ -1929,7 +2168,7 @@ function renderNewsItems(articles, topic) {
   container.innerHTML = html;
 }
 
-function renderFallbackNews(topic) {
+function renderFallbackNews() {
   // ESPN nicht erreichbar → direkte Links als Fallback
   const links = [
     { label: '🏈 Chiefs News', url: 'https://www.chiefs.com/news' },
@@ -1955,12 +2194,7 @@ function escHtml(str) {
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-function switchNewsTab(tab, btn) {
-  document.querySelectorAll('.news-tab').forEach(t => t.classList.remove('active'));
-  btn.classList.add('active');
-  currentNewsTab = tab;
-  loadNews(tab);
-}
+// switchNewsTab removed — single news feed
 
 // ══ NAVIGATION ══
 function switchPage(page, btn) {
@@ -1971,9 +2205,7 @@ function switchPage(page, btn) {
   btn.classList.add('active');
 
   // Lazy load news
-  if (page === 'news' && document.getElementById('newsContainer').querySelector('.news-loading')) {
-    loadNews(currentNewsTab);
-  }
+  if (page === 'news' && !newsLoaded) { loadNews(); }
 
   window.scrollTo(0, 0);
 }
