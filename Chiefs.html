@@ -1848,11 +1848,23 @@ function updateCountdown() {
   document.getElementById('cdMins').textContent = String(mins).padStart(2,'0');
 }
 
-// ══ NEWS (RSS via allorigins proxy) ══
+// ══ NEWS — via rss2json.com (kein API-Key nötig, CORS-sicher) ══
+// rss2json.com konvertiert jeden RSS-Feed in sauberes JSON — funktioniert
+// auf GitHub Pages ohne eigenen Server. Kostenlos bis 10.000 Req/Tag.
+
+const RSS2JSON = 'https://api.rss2json.com/v1/api.json?rss_url=';
+
+// Google News RSS: sehr zuverlässig, CORS-offen via rss2json
 const NEWS_FEEDS = {
-  chiefs:  'https://www.chiefs.com/rss/news',
-  nfl:     'https://www.nfl.com/rss/rsslanding?searchString=news',
-  mahomes: 'https://news.google.com/rss/search?q=Patrick+Mahomes+Chiefs+2026&hl=en-US&gl=US&ceid=US:en',
+  chiefs:  'https://news.google.com/rss/search?q=Kansas+City+Chiefs&hl=de&gl=DE&ceid=DE:de',
+  nfl:     'https://news.google.com/rss/search?q=NFL+2026&hl=de&gl=DE&ceid=DE:de',
+  mahomes: 'https://news.google.com/rss/search?q=Patrick+Mahomes+2026&hl=de&gl=DE&ceid=DE:de',
+};
+
+const NEWS_LABELS = {
+  chiefs:  '🏈 Chiefs',
+  nfl:     '🏟️ NFL',
+  mahomes: '⚡ Mahomes',
 };
 
 let currentNewsTab = 'chiefs';
@@ -1861,87 +1873,68 @@ async function loadNews(topic = 'chiefs') {
   const container = document.getElementById('newsContainer');
   container.innerHTML = `<div class="news-loading"><div class="spinner"></div><div style="font-family:'Barlow Condensed';letter-spacing:1px;font-size:0.9rem">LADE NEWS...</div></div>`;
 
-  // Try multiple CORS proxies in sequence
   const feedUrl = NEWS_FEEDS[topic] || NEWS_FEEDS.chiefs;
-  const proxies = [
-    `https://api.allorigins.win/get?url=${encodeURIComponent(feedUrl)}`,
-    `https://corsproxy.io/?${encodeURIComponent(feedUrl)}`,
-  ];
-
-  let xml = null;
-
-  for (const proxy of proxies) {
-    try {
-      const r = await fetch(proxy, { signal: AbortSignal.timeout(8000) });
-      if (!r.ok) continue;
-      const data = await r.json().catch(() => null);
-      const text = data?.contents || await r.text().catch(() => null);
-      if (text && text.includes('<item>')) { xml = text; break; }
-      if (text && text.includes('<entry>')) { xml = text; break; }
-    } catch(e) { continue; }
-  }
-
-  if (!xml) {
-    container.innerHTML = renderFallbackNews(topic);
-    return;
-  }
+  const apiUrl  = RSS2JSON + encodeURIComponent(feedUrl) + '&count=12';
 
   try {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(xml, 'text/xml');
-    const items = [...doc.querySelectorAll('item, entry')].slice(0, 10);
+    const r = await fetch(apiUrl, { signal: AbortSignal.timeout(10000) });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
 
-    if (!items.length) {
-      container.innerHTML = renderFallbackNews(topic);
-      return;
+    const data = await r.json();
+
+    if (data.status !== 'ok' || !data.items?.length) {
+      throw new Error('Keine Artikel');
     }
 
-    let html = '';
-    items.forEach((item, i) => {
-      const title = item.querySelector('title')?.textContent?.trim() || 'No title';
-      const desc  = item.querySelector('description, summary')?.textContent?.replace(/<[^>]+>/g,'').trim() || '';
-      const link  = item.querySelector('link')?.textContent?.trim() || item.querySelector('link')?.getAttribute('href') || '#';
-      const pubDate = item.querySelector('pubDate, published, updated')?.textContent || '';
-      const dateStr = pubDate ? new Date(pubDate).toLocaleDateString('de-DE', {day:'numeric',month:'short',year:'numeric'}) : '';
-
+    let html = '<div class="news-container">';
+    data.items.forEach((item, i) => {
+      const title   = escHtml(item.title || '');
+      const desc    = escHtml((item.description || '').replace(/<[^>]+>/g, '').trim().slice(0, 180));
+      const link    = item.link || '#';
+      const source  = escHtml(item.author || item.source || NEWS_LABELS[topic] || '');
+      const pubDate = item.pubDate ? new Date(item.pubDate).toLocaleDateString('de-DE', {day:'numeric', month:'short', year:'numeric'}) : '';
+      const imgUrl  = item.enclosure?.link || item.thumbnail || '';
       const featured = i === 0 ? 'featured' : '';
 
-      html += `<a href="${link}" target="_blank" rel="noopener" class="news-card ${featured}">
-        <div class="news-img-placeholder"></div>
+      const imgHtml = imgUrl
+        ? `<img class="news-img" src="${imgUrl}" alt="" loading="lazy" onerror="this.parentElement.innerHTML='<div class=news-img-placeholder></div>'">`
+        : `<div class="news-img-placeholder"></div>`;
+
+      html += `<a href="${link}" target="_blank" rel="noopener noreferrer" class="news-card ${featured}">
+        ${imgHtml}
         <div class="news-body">
-          <div class="news-source">${getSourceLabel(topic)}</div>
-          <div class="news-title">${escHtml(title)}</div>
-          ${desc ? `<div class="news-desc">${escHtml(desc.slice(0,200))}</div>` : ''}
-          ${dateStr ? `<div class="news-date">${dateStr}</div>` : ''}
+          <div class="news-source">${source || NEWS_LABELS[topic]}</div>
+          <div class="news-title">${title}</div>
+          ${desc ? `<div class="news-desc">${desc}</div>` : ''}
+          ${pubDate ? `<div class="news-date">${pubDate}</div>` : ''}
         </div>
       </a>`;
     });
+    html += '</div>';
 
     container.innerHTML = html;
-  } catch(e) {
+
+  } catch(err) {
+    console.warn('News load failed:', err);
     container.innerHTML = renderFallbackNews(topic);
   }
-}
-
-function getSourceLabel(topic) {
-  return { chiefs:'Chiefs.com', nfl:'NFL.com', mahomes:'Google News' }[topic] || 'News';
 }
 
 function renderFallbackNews(topic) {
   return `<div class="news-error">
     <div style="font-size:2rem;margin-bottom:12px">📡</div>
-    <p>News konnten nicht geladen werden.<br>Überprüfe deine Internetverbindung.</p>
-    <button class="refresh-btn" onclick="loadNews('${topic}')">🔄 Neu laden</button>
-    <div style="margin-top:16px">
-      <a href="https://www.chiefs.com/news" target="_blank" style="color:var(--gold);font-family:'Barlow Condensed';font-size:0.9rem;font-weight:700">
-        → chiefs.com/news öffnen
-      </a>
+    <p>News konnten nicht geladen werden.<br>Bitte Internetverbindung prüfen.</p>
+    <button class="refresh-btn" onclick="loadNews('${topic}')">🔄 Erneut versuchen</button>
+    <div style="margin-top:20px;display:flex;flex-direction:column;gap:10px">
+      <a href="https://www.chiefs.com/news" target="_blank" style="color:var(--gold);font-family:'Barlow Condensed';font-size:0.95rem;font-weight:700;text-decoration:none">→ chiefs.com/news</a>
+      <a href="https://www.nfl.com/teams/kansas-city-chiefs/articles" target="_blank" style="color:var(--muted);font-family:'Barlow Condensed';font-size:0.85rem;font-weight:600;text-decoration:none">→ nfl.com · Chiefs Artikel</a>
     </div>
   </div>`;
 }
 
 function escHtml(str) {
-  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  if (!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 function switchNewsTab(tab, btn) {
