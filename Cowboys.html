@@ -1,0 +1,1785 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#002244">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Dallas Cowboys 2026 – America's Team</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Teko:wght@400;500;600;700&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ══════════════════════════════════════════════
+   DESIGN SYSTEM — Dallas Cowboys
+   Navy:   #002244
+   Silver: #869397
+   White:  #FFFFFF
+   Accent: #B0B7BC  (light silver)
+   Star:   #C8D4D8  (star silver gleam)
+   ══════════════════════════════════════════════ */
+:root {
+  --navy:       #002244;
+  --navy-deep:  #001830;
+  --navy-mid:   #00305a;
+  --silver:     #869397;
+  --silver-lt:  #B0B7BC;
+  --silver-dim: #4a5257;
+  --star:       #C8D4D8;
+  --white:      #FFFFFF;
+  --dark:       #080e14;
+  --card:       #0d1824;
+  --card2:      #111f2e;
+  --border:     rgba(134,147,151,0.12);
+  --border-lt:  rgba(134,147,151,0.22);
+  --muted:      rgba(176,183,188,0.5);
+  --radius:     12px;
+  --radius-sm:  8px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--dark);
+  color: var(--white);
+  font-family: 'Rajdhani', sans-serif;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  padding-bottom: 72px;
+}
+
+/* ══ STAR BACKGROUND PATTERN ══ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(ellipse 120% 80% at 80% -20%, rgba(0,34,68,0.9) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at -10% 100%, rgba(0,48,90,0.4) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ══ HERO ══ */
+.hero {
+  background: linear-gradient(170deg, var(--navy-deep) 0%, #001428 50%, var(--dark) 100%);
+  padding: 18px 16px 0;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* Giant star watermark */
+.hero::before {
+  content: '★';
+  position: absolute;
+  right: -30px;
+  top: -40px;
+  font-size: 220px;
+  color: rgba(134,147,151,0.04);
+  line-height: 1;
+  pointer-events: none;
+  font-family: 'Teko', sans-serif;
+}
+
+/* Diagonal stripe accent */
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, var(--silver) 30%, var(--silver-lt) 50%, var(--silver) 70%, transparent 100%);
+}
+
+.hero-top {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Cowboys star logo SVG */
+.hero-logo {
+  width: 58px;
+  height: 58px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 12px rgba(134,147,151,0.3));
+}
+
+.hero-info h1 {
+  font-family: 'Teko', sans-serif;
+  font-size: 2.1rem;
+  line-height: 0.92;
+  letter-spacing: 2px;
+  color: var(--white);
+  text-transform: uppercase;
+}
+
+.hero-info h1 span {
+  color: var(--silver-lt);
+}
+
+.hero-info p {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 3px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+.hero-tag {
+  margin-left: auto;
+  font-family: 'Teko', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  color: var(--silver-lt);
+  text-align: right;
+  line-height: 1.3;
+}
+
+.hero-tag span {
+  display: block;
+  font-size: 1.1rem;
+  color: var(--white);
+}
+
+/* Hero stats */
+.hero-stats {
+  display: flex;
+  gap: 6px;
+  margin-top: 16px;
+  padding-bottom: 18px;
+  position: relative;
+  z-index: 1;
+}
+
+.stat-pill {
+  flex: 1;
+  background: rgba(134,147,151,0.07);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 9px 6px;
+  text-align: center;
+}
+
+.stat-pill .num {
+  font-family: 'Teko', sans-serif;
+  font-size: 1.6rem;
+  color: var(--silver-lt);
+  line-height: 1;
+}
+
+.stat-pill .lbl {
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-top: 1px;
+}
+
+/* ══ BOTTOM NAV ══ */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 68px;
+  background: rgba(8, 14, 20, 0.97);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border-lt);
+  display: flex;
+  z-index: 1000;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: var(--silver-dim);
+  padding: 8px 0;
+  transition: color 0.2s;
+  position: relative;
+}
+
+.nav-item.active { color: var(--silver-lt); }
+
+.nav-item.active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 20%;
+  right: 20%;
+  height: 2px;
+  background: var(--silver-lt);
+  border-radius: 0 0 2px 2px;
+}
+
+.nav-item svg { width: 20px; height: 20px; }
+
+.nav-label {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* ══ PAGES ══ */
+.page {
+  display: none;
+  padding: 0 14px;
+  position: relative;
+  z-index: 1;
+  animation: fadeUp 0.2s ease;
+}
+
+.page.active { display: block; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ══ SECTION TITLES ══ */
+.section-title {
+  font-family: 'Teko', sans-serif;
+  font-size: 1.4rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin: 20px 0 12px;
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-title::before {
+  content: '★';
+  color: var(--silver);
+  font-size: 0.9rem;
+}
+
+.section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--silver-dim), transparent);
+}
+
+/* ══ NEXT GAME CARD ══ */
+.next-game-card {
+  background: linear-gradient(135deg, rgba(0,34,68,0.9) 0%, rgba(0,24,48,0.95) 100%);
+  border: 1px solid var(--border-lt);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 18px;
+  position: relative;
+  overflow: hidden;
+}
+
+.next-game-card::before {
+  content: 'NEXT GAME';
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  font-family: 'Teko', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 3px;
+  color: var(--silver-dim);
+}
+
+.next-game-card::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--silver-lt), var(--silver-dim));
+}
+
+.next-game-date {
+  font-family: 'Teko', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  color: var(--silver-lt);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.next-game-matchup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0;
+}
+
+.next-team { text-align: center; flex: 1; }
+
+.next-team-logo {
+  width: 50px;
+  height: 50px;
+  margin: 0 auto 5px;
+}
+
+.next-team-name {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--silver-lt);
+}
+
+.vs-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(134,147,151,0.08);
+  border: 1px solid var(--border-lt);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Teko', sans-serif;
+  font-size: 0.85rem;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.next-game-meta {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.meta-item { display: flex; flex-direction: column; gap: 1px; }
+.meta-label { font-size: 0.55rem; font-weight: 700; letter-spacing: 1.5px; color: var(--muted); text-transform: uppercase; }
+.meta-value { font-family: 'Rajdhani', sans-serif; font-size: 0.9rem; font-weight: 700; color: var(--white); }
+
+/* ══ SCHEDULE LIST ══ */
+.schedule-list { display: flex; flex-direction: column; gap: 5px; margin-bottom: 20px; }
+
+.game-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  display: grid;
+  grid-template-columns: 34px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.15s;
+}
+
+.game-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+}
+
+.game-card.home::before  { background: var(--silver-lt); }
+.game-card.away::before  { background: var(--silver-dim); }
+.game-card.bye           { background: rgba(13,24,36,0.5); border-style: dashed; }
+.game-card.primetime     { background: linear-gradient(90deg, rgba(134,147,151,0.06), var(--card)); border-color: rgba(134,147,151,0.2); }
+.game-card.special-game  { background: linear-gradient(90deg, rgba(0,48,90,0.3), var(--card)); border-color: rgba(0,80,140,0.3); }
+.game-card.intl-game     { background: linear-gradient(90deg, rgba(0,60,40,0.2), var(--card)); border-color: rgba(0,120,80,0.2); }
+
+.week-badge {
+  background: rgba(134,147,151,0.07);
+  border-radius: 5px;
+  padding: 3px 0;
+  text-align: center;
+}
+
+.week-num {
+  font-family: 'Teko', sans-serif;
+  font-size: 1.1rem;
+  color: var(--silver-lt);
+  line-height: 1;
+  display: block;
+}
+
+.week-lbl {
+  font-size: 0.45rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.game-info {}
+
+.game-opponent {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+  line-height: 1.2;
+}
+
+.ha-home {
+  font-size: 0.55rem;
+  background: var(--silver-lt);
+  color: var(--dark);
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.ha-away {
+  font-size: 0.55rem;
+  background: rgba(134,147,151,0.15);
+  color: var(--silver-lt);
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.game-datetime {
+  font-size: 0.68rem;
+  color: var(--muted);
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.time-de { color: var(--silver-lt); font-weight: 600; }
+
+.special-badge {
+  font-size: 0.5rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+.sb-thanksgiving { background: #4a2500; color: #ffd700; }
+.sb-primetime    { background: rgba(134,147,151,0.15); color: var(--silver-lt); }
+.sb-intl         { background: rgba(0,100,60,0.25); color: #6dffb0; }
+
+.game-right { text-align: right; }
+
+.game-network {
+  font-family: 'Teko', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  font-weight: 600;
+  padding: 3px 7px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-bottom: 2px;
+}
+
+.net-NBC     { background: #002060; color: #ffd700; }
+.net-CBS     { background: #003099; color: #69cfff; }
+.net-FOX     { background: #900; color: #fff; }
+.net-ESPN    { background: #c00; color: #fff; }
+.net-AMZ     { background: #0073bb; color: #fff; }
+.net-NFLN    { background: var(--navy); color: var(--silver-lt); }
+.net-TBD     { background: #222; color: #888; }
+
+.game-time-et { font-size: 0.6rem; color: var(--muted); }
+
+/* Week chips */
+.week-scroll {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 0 0 8px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  margin-bottom: 8px;
+}
+.week-scroll::-webkit-scrollbar { display: none; }
+
+.week-chip {
+  flex-shrink: 0;
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-family: 'Teko', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.week-chip.active {
+  background: var(--navy-mid);
+  border-color: var(--silver);
+  color: var(--white);
+}
+
+/* Bye card */
+.bye-card {
+  background: rgba(13,24,36,0.5);
+  border: 1px dashed rgba(134,147,151,0.15);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  text-align: center;
+}
+
+.bye-card .bye-text {
+  font-family: 'Teko', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 3px;
+  color: var(--silver-dim);
+}
+
+/* Countdown */
+.countdown-card {
+  background: linear-gradient(135deg, rgba(0,34,68,0.8), var(--card));
+  border: 1px solid var(--border-lt);
+  border-radius: var(--radius);
+  padding: 16px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.countdown-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.countdown-timer {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+}
+
+.countdown-unit { text-align: center; }
+
+.countdown-num {
+  font-family: 'Teko', sans-serif;
+  font-size: 2.4rem;
+  color: var(--silver-lt);
+  line-height: 1;
+  min-width: 56px;
+}
+
+.countdown-unit-label {
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.countdown-divider {
+  font-family: 'Teko', sans-serif;
+  font-size: 2rem;
+  color: rgba(134,147,151,0.2);
+  align-self: center;
+}
+
+/* ══ NEWS ══ */
+.news-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  margin-bottom: 10px;
+  transition: border-color 0.15s;
+}
+
+.news-card:active { border-color: var(--silver); }
+.news-card.featured { border-color: rgba(134,147,151,0.3); background: linear-gradient(135deg, rgba(0,34,68,0.6), var(--card)); }
+
+.news-img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  display: block;
+}
+
+.news-img-placeholder {
+  height: 0;
+  display: none;
+}
+
+.news-card.featured .news-img-placeholder {
+  height: 70px;
+  display: flex;
+  background: linear-gradient(135deg, var(--navy-deep), var(--card));
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  opacity: 0.2;
+}
+
+.news-body { padding: 12px; }
+
+.news-source {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--silver);
+  text-transform: uppercase;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.news-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--white);
+  margin-bottom: 5px;
+}
+
+.news-desc {
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.news-date { font-size: 0.65rem; color: rgba(134,147,151,0.4); margin-top: 6px; }
+
+.news-loading {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--muted);
+}
+
+.spinner {
+  width: 30px;
+  height: 30px;
+  border: 3px solid rgba(134,147,151,0.1);
+  border-top-color: var(--silver);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 12px;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.news-error {
+  text-align: center;
+  padding: 28px 20px;
+  background: var(--card);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+
+.news-error p { font-size: 0.85rem; color: var(--muted); margin-bottom: 12px; }
+
+.refresh-btn {
+  background: var(--navy-mid);
+  color: var(--silver-lt);
+  border: 1px solid var(--border-lt);
+  padding: 8px 20px;
+  border-radius: var(--radius-sm);
+  font-family: 'Teko', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+/* ══ ROSTER ══ */
+.roster-section { margin-bottom: 20px; }
+
+.roster-section-title {
+  font-family: 'Teko', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 3px;
+  color: var(--silver);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  padding-left: 10px;
+  border-left: 2px solid var(--silver-dim);
+}
+
+.player-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.player-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.player-number {
+  font-family: 'Teko', sans-serif;
+  font-size: 1.5rem;
+  color: rgba(134,147,151,0.18);
+  line-height: 1;
+  min-width: 30px;
+  text-align: center;
+}
+
+.player-name {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.2;
+}
+
+.player-pos {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--silver);
+  text-transform: uppercase;
+  margin-top: 1px;
+}
+
+.player-note {
+  font-size: 0.6rem;
+  color: var(--silver-lt);
+  margin-top: 1px;
+}
+
+/* ══ INFO / HISTORY ══ */
+.info-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 10px;
+}
+
+.info-card h3 {
+  font-family: 'Teko', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+  color: var(--silver-lt);
+  margin-bottom: 10px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.85rem;
+}
+
+.info-row:last-child { border-bottom: none; }
+.info-row .label { color: var(--muted); }
+.info-row .value { font-weight: 700; color: var(--white); text-align: right; font-size: 0.88rem; }
+
+/* Super Bowl card */
+.sb-card {
+  background: linear-gradient(135deg, rgba(0,34,68,0.9), rgba(0,20,40,0.95));
+  border: 1px solid rgba(134,147,151,0.25);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  position: relative;
+  overflow: hidden;
+}
+
+.sb-card::after {
+  content: '★';
+  position: absolute;
+  right: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 70px;
+  color: rgba(134,147,151,0.04);
+  line-height: 1;
+  font-family: 'Teko';
+}
+
+.sb-num {
+  font-family: 'Teko', sans-serif;
+  font-size: 2.2rem;
+  color: var(--silver-lt);
+  line-height: 1;
+  min-width: 48px;
+  text-align: center;
+}
+
+.sb-info {}
+
+.sb-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.3;
+}
+
+.sb-detail {
+  font-size: 0.72rem;
+  color: var(--muted);
+  margin-top: 3px;
+}
+
+.sb-score {
+  font-family: 'Teko', sans-serif;
+  font-size: 0.85rem;
+  color: var(--silver-lt);
+  margin-top: 2px;
+  letter-spacing: 1px;
+}
+
+/* Stats grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.stat-box {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  text-align: center;
+}
+
+.stat-box .snum {
+  font-family: 'Teko', sans-serif;
+  font-size: 1.8rem;
+  color: var(--silver-lt);
+  line-height: 1;
+}
+
+.stat-box .slbl {
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-top: 3px;
+}
+
+/* Timeline */
+.history-moment {
+  display: grid;
+  grid-template-columns: 42px 16px 1fr;
+  gap: 0 10px;
+  align-items: flex-start;
+  padding-bottom: 18px;
+  position: relative;
+}
+
+.history-moment::after {
+  content: '';
+  position: absolute;
+  left: 50px;
+  top: 16px;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(180deg, rgba(134,147,151,0.25), rgba(134,147,151,0.03));
+}
+
+.history-moment:last-child::after { display: none; }
+
+.hm-year {
+  font-family: 'Teko', sans-serif;
+  font-size: 0.85rem;
+  color: var(--silver);
+  letter-spacing: 1px;
+  padding-top: 1px;
+  text-align: right;
+  line-height: 1.2;
+}
+
+.hm-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--silver-dim);
+  border: 2px solid var(--silver);
+  margin-top: 3px;
+  z-index: 1;
+}
+
+.hm-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.3;
+}
+
+.hm-desc {
+  font-size: 0.73rem;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-top: 3px;
+}
+
+/* Links */
+.link-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.link-btn {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  text-decoration: none;
+  color: var(--white);
+  transition: border-color 0.15s;
+  text-align: center;
+}
+
+.link-btn:active { border-color: var(--silver); }
+.link-btn .icon { font-size: 1.4rem; }
+.link-btn .title { font-family: 'Teko', sans-serif; font-size: 0.9rem; letter-spacing: 1px; }
+.link-btn .sub   { font-size: 0.6rem; color: var(--muted); }
+
+/* Departures */
+.departure-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.82rem;
+}
+
+.departure-row:last-child { border-bottom: none; }
+.departure-row .plr  { color: var(--white); font-weight: 600; }
+.departure-row .dest { font-size: 0.72rem; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<!-- ══ HERO ══ -->
+<div class="hero">
+  <div class="hero-top">
+    <!-- Cowboys Star Logo -->
+    <svg class="hero-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="starGrad" cx="50%" cy="40%" r="55%">
+          <stop offset="0%" stop-color="#C8D4D8"/>
+          <stop offset="100%" stop-color="#869397"/>
+        </radialGradient>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+          <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      <!-- Outer ring -->
+      <circle cx="50" cy="50" r="47" fill="#002244" stroke="#869397" stroke-width="2"/>
+      <!-- Inner ring -->
+      <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(134,147,151,0.3)" stroke-width="0.5"/>
+      <!-- Star -->
+      <polygon points="50,14 59,37 84,37 64,53 71,76 50,62 29,76 36,53 16,37 41,37"
+        fill="url(#starGrad)" filter="url(#glow)"/>
+    </svg>
+
+    <div class="hero-info">
+      <h1>DALLAS<br><span>COWBOYS</span></h1>
+      <p>NFL Season 2026 · America's Team</p>
+    </div>
+
+    <div class="hero-tag">
+      SINCE<span>1960</span>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat-pill">
+      <div class="num">0</div>
+      <div class="lbl">Wins</div>
+    </div>
+    <div class="stat-pill">
+      <div class="num">0</div>
+      <div class="lbl">Losses</div>
+    </div>
+    <div class="stat-pill">
+      <div class="num">14</div>
+      <div class="lbl">Bye Wk</div>
+    </div>
+    <div class="stat-pill">
+      <div class="num">17</div>
+      <div class="lbl">Spiele</div>
+    </div>
+    <div class="stat-pill">
+      <div class="num">6</div>
+      <div class="lbl">Primetime</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PAGES ══ -->
+
+<!-- SCHEDULE -->
+<div class="page active" id="page-schedule">
+
+  <div id="countdownCard" class="countdown-card" style="margin-top:18px">
+    <div class="countdown-label">★ Countdown zum Saisonstart</div>
+    <div class="countdown-timer">
+      <div class="countdown-unit">
+        <div class="countdown-num" id="cdDays">--</div>
+        <div class="countdown-unit-label">Tage</div>
+      </div>
+      <div class="countdown-divider">:</div>
+      <div class="countdown-unit">
+        <div class="countdown-num" id="cdHours">--</div>
+        <div class="countdown-unit-label">Std</div>
+      </div>
+      <div class="countdown-divider">:</div>
+      <div class="countdown-unit">
+        <div class="countdown-num" id="cdMins">--</div>
+        <div class="countdown-unit-label">Min</div>
+      </div>
+    </div>
+    <div id="cdLabel" style="margin-top:8px;font-size:0.72rem;color:var(--muted);font-family:'Rajdhani';letter-spacing:1px">
+      So. 13. Sep. 2026 · @ New York Giants · 02:20 Uhr MEZ (NBC)
+    </div>
+  </div>
+
+  <div class="next-game-card" id="nextGameCard">
+    <div class="next-game-date" id="ngDate">So., 13. Sep. 2026</div>
+    <div class="next-game-matchup">
+      <div class="next-team">
+        <div class="next-team-logo">
+          <svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="28" fill="#002244" stroke="#869397" stroke-width="1.5"/>
+          <polygon points="30,10 36,24 52,24 39,33 44,47 30,38 16,47 21,33 8,24 24,24" fill="#C8D4D8"/>
+          </svg>
+        </div>
+        <div class="next-team-name">Cowboys</div>
+      </div>
+      <div class="vs-circle">VS</div>
+      <div class="next-team">
+        <div class="next-team-logo" id="ngOppLogo">
+          <svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="28" fill="#0B2265" stroke="#A71930" stroke-width="2"/>
+          <text x="30" y="37" text-anchor="middle" font-family="Arial Black" font-size="11" font-weight="900" fill="#fff">NYG</text></svg>
+        </div>
+        <div class="next-team-name" id="ngOppName">N.Y. Giants</div>
+      </div>
+    </div>
+    <div class="next-game-meta">
+      <div class="meta-item">
+        <span class="meta-label">Ort</span>
+        <span class="meta-value" id="ngLocation">MetLife Stadium</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Kickoff ET</span>
+        <span class="meta-value" id="ngTimeET">8:20p ET</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">🇩🇪 MEZ</span>
+        <span class="meta-value" id="ngTimeDE">02:20 Uhr</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">TV (USA)</span>
+        <span class="meta-value" id="ngNetwork">NBC</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">SPIELPLAN 2026</div>
+
+  <div class="week-scroll" id="weekChips"></div>
+  <div class="schedule-list" id="scheduleList"></div>
+</div>
+
+<!-- NEWS -->
+<div class="page" id="page-news">
+  <div class="section-title" style="margin-top:18px">COWBOYS NEWS</div>
+  <div id="newsContainer">
+    <div class="news-loading">
+      <div class="spinner"></div>
+      <div style="font-family:'Teko';letter-spacing:2px;font-size:1rem;color:var(--muted)">LADE NEWS...</div>
+    </div>
+  </div>
+</div>
+
+<!-- HISTORY -->
+<div class="page" id="page-history">
+  <div class="section-title" style="margin-top:18px">FRANCHISE HISTORY</div>
+
+  <!-- Super Bowls -->
+  <div class="roster-section">
+    <div class="roster-section-title">★ Super Bowl Titel (5)</div>
+
+    <div class="sb-card">
+      <div class="sb-num">VI</div>
+      <div class="sb-info">
+        <div class="sb-title">Super Bowl VI · 1972</div>
+        <div class="sb-score">24 – 3 vs. Miami Dolphins</div>
+        <div class="sb-detail">Tulane Stadium, New Orleans · MVP: Roger Staubach</div>
+      </div>
+    </div>
+    <div class="sb-card">
+      <div class="sb-num">XII</div>
+      <div class="sb-info">
+        <div class="sb-title">Super Bowl XII · 1978</div>
+        <div class="sb-score">27 – 10 vs. Denver Broncos</div>
+        <div class="sb-detail">Louisiana Superdome · MVP: Harvey Martin & Randy White</div>
+      </div>
+    </div>
+    <div class="sb-card">
+      <div class="sb-num">XXVII</div>
+      <div class="sb-info">
+        <div class="sb-title">Super Bowl XXVII · 1993</div>
+        <div class="sb-score">52 – 17 vs. Buffalo Bills</div>
+        <div class="sb-detail">Rose Bowl, Pasadena · MVP: Troy Aikman</div>
+      </div>
+    </div>
+    <div class="sb-card">
+      <div class="sb-num">XXVIII</div>
+      <div class="sb-info">
+        <div class="sb-title">Super Bowl XXVIII · 1994</div>
+        <div class="sb-score">30 – 13 vs. Buffalo Bills</div>
+        <div class="sb-detail">Georgia Dome, Atlanta · MVP: Emmitt Smith</div>
+      </div>
+    </div>
+    <div class="sb-card">
+      <div class="sb-num">XXX</div>
+      <div class="sb-info">
+        <div class="sb-title">Super Bowl XXX · 1996</div>
+        <div class="sb-score">27 – 17 vs. Pittsburgh Steelers</div>
+        <div class="sb-detail">Sun Devil Stadium, Tempe · MVP: Larry Brown</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Franchise-Rekorde -->
+  <div class="roster-section">
+    <div class="roster-section-title">★ Franchise Rekorde & Zahlen</div>
+    <div class="stats-grid">
+      <div class="stat-box"><div class="snum">5</div><div class="slbl">Super Bowls</div></div>
+      <div class="stat-box"><div class="snum">8</div><div class="slbl">NFC Titel</div></div>
+      <div class="stat-box"><div class="snum">24×</div><div class="slbl">Playoff-Teilnahmen</div></div>
+      <div class="stat-box"><div class="snum">566</div><div class="slbl">All-Time Wins</div></div>
+      <div class="stat-box"><div class="snum">13×</div><div class="slbl">Div.-Titel (seit 2000)</div></div>
+      <div class="stat-box"><div class="snum">$10B+</div><div class="slbl">Franchise-Wert</div></div>
+    </div>
+  </div>
+
+  <!-- Timeline -->
+  <div class="roster-section">
+    <div class="roster-section-title">★ Legendäre Momente</div>
+
+    <div class="history-moment">
+      <div class="hm-year">1960</div>
+      <div class="hm-dot"></div>
+      <div class="hm-text">
+        <div class="hm-title">Gründung — America's Team wird geboren</div>
+        <div class="hm-desc">Tex Schramm, Tom Landry und Clint Murchison Jr. bringen die Cowboys in die AFL. Ein Name, eine Marke — für die Ewigkeit.</div>
+      </div>
+    </div>
+
+    <div class="history-moment">
+      <div class="hm-year">1971</div>
+      <div class="hm-dot"></div>
+      <div class="hm-text">
+        <div class="hm-title">Erster Super Bowl Titel</div>
+        <div class="hm-desc">24–3 gegen die Dolphins. Roger Staubach als MVP. Coach Tom Landry gewinnt seinen ersten Ring.</div>
+      </div>
+    </div>
+
+    <div class="history-moment">
+      <div class="hm-year">1978</div>
+      <div class="hm-dot"></div>
+      <div class="hm-text">
+        <div class="hm-title">Super Bowl XII — Die Doomsday Defense</div>
+        <div class="hm-desc">Die legendäre Defense dominiert Denver 27–10. Harvey Martin wird zum ersten Defensive MVP der Super-Bowl-Geschichte.</div>
+      </div>
+    </div>
+
+    <div class="history-moment">
+      <div class="hm-year">1992</div>
+      <div class="hm-dot"></div>
+      <div class="hm-text">
+        <div class="hm-title">Die Triplets kommen — Troy, Emmitt & Michael</div>
+        <div class="hm-desc">Aikman, Smith und Irvin. Drei Hall-of-Famers, ein Dynasty. Jimmy Johnson beginnt den Aufbau der 90er-Ära.</div>
+      </div>
+    </div>
+
+    <div class="history-moment">
+      <div class="hm-year">1993–96</div>
+      <div class="hm-dot"></div>
+      <div class="hm-text">
+        <div class="hm-title">Three-peat: SB XXVII · XXVIII · XXX</div>
+        <div class="hm-desc">Drei Titel in vier Jahren. Emmitt Smith wird All-Time Rushing Leader. Dallas ist die Franchise des Jahrzehnts.</div>
+      </div>
+    </div>
+
+    <div class="history-moment">
+      <div class="hm-year">2007</div>
+      <div class="hm-dot"></div>
+      <div class="hm-text">
+        <div class="hm-title">AT&T Stadium — Der Palast von Arlington</div>
+        <div class="hm-desc">Das neue Arrowhead der Cowboys fasst 100.000+ Fans, hat die größte Videowand der NFL und kostet 1,3 Mrd. Dollar.</div>
+      </div>
+    </div>
+
+    <div class="history-moment">
+      <div class="hm-year">2016</div>
+      <div class="hm-dot"></div>
+      <div class="hm-text">
+        <div class="hm-title">Dak Prescott & Ezekiel Elliott — Rookie-Saison</div>
+        <div class="hm-desc">Dak ersetzt den verletzten Romo und führt Dallas zu 13 Siegen. Elliott gewinnt die Rushing-Krone als Rookie.</div>
+      </div>
+    </div>
+
+    <div class="history-moment">
+      <div class="hm-year">2025</div>
+      <div class="hm-dot"></div>
+      <div class="hm-text">
+        <div class="hm-title">Micah Parsons Trade · Schottenheimer als HC</div>
+        <div class="hm-desc">Das Ende einer Ära: Parsons wird getradet, Brian Schottenheimer übernimmt. Dallas holt George Pickens und endet 7-9-1.</div>
+      </div>
+    </div>
+
+    <div class="history-moment" style="opacity:1">
+      <div class="hm-year" style="color:var(--silver-lt)">2026</div>
+      <div class="hm-dot" style="background:var(--silver-lt);border-color:var(--white);box-shadow:0 0 6px rgba(200,212,216,0.4)"></div>
+      <div class="hm-text">
+        <div class="hm-title" style="color:var(--silver-lt)">★ Die Jagd auf Ring VI beginnt</div>
+        <div class="hm-desc">Dak + Lamb + Pickens. Rio de Janeiro. Thanksgiving vs. Philadelphia. Year 2 Schottenheimer. Das Kingdom wartet seit 30 Jahren.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ROSTER -->
+<div class="page" id="page-roster">
+  <div class="section-title" style="margin-top:18px">KADER 2026</div>
+
+  <div class="roster-section">
+    <div class="roster-section-title">Quarterback</div>
+    <div class="player-grid">
+      <div class="player-card">
+        <div class="player-number">4</div>
+        <div><div class="player-name">Dak Prescott</div><div class="player-pos">QB · Starter</div></div>
+      </div>
+      <div class="player-card">
+        <div class="player-number">12</div>
+        <div><div class="player-name">Joe Milton III</div><div class="player-pos">QB · Backup</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="roster-section">
+    <div class="roster-section-title">Running Back</div>
+    <div class="player-grid">
+      <div class="player-card">
+        <div class="player-number">26</div>
+        <div><div class="player-name">Javonte Williams</div><div class="player-pos">RB · Starter</div><div class="player-note">🆕 Ex-Broncos</div></div>
+      </div>
+      <div class="player-card">
+        <div class="player-number">25</div>
+        <div><div class="player-name">Malik Davis</div><div class="player-pos">RB · Backup</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="roster-section">
+    <div class="roster-section-title">Wide Receiver</div>
+    <div class="player-grid">
+      <div class="player-card">
+        <div class="player-number">88</div>
+        <div><div class="player-name">CeeDee Lamb</div><div class="player-pos">WR1 · All-Pro</div><div class="player-note">⭐ Franchise Star</div></div>
+      </div>
+      <div class="player-card">
+        <div class="player-number">14</div>
+        <div><div class="player-name">George Pickens</div><div class="player-pos">WR2 · Starter</div><div class="player-note">🆕 Trade von PIT</div></div>
+      </div>
+      <div class="player-card">
+        <div class="player-number">2</div>
+        <div><div class="player-name">Ryan Flournoy</div><div class="player-pos">WR · Slot</div></div>
+      </div>
+      <div class="player-card">
+        <div class="player-number">98</div>
+        <div><div class="player-name">KaVontae Turpin</div><div class="player-pos">WR / KR</div><div class="player-note">⚡ Best Kickoff Returner NFL</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="roster-section">
+    <div class="roster-section-title">Tight End</div>
+    <div class="player-grid">
+      <div class="player-card">
+        <div class="player-number">87</div>
+        <div><div class="player-name">Jake Ferguson</div><div class="player-pos">TE · Starter</div><div class="player-note">82 Rec · 8 TD (2025)</div></div>
+      </div>
+      <div class="player-card">
+        <div class="player-number">84</div>
+        <div><div class="player-name">Luke Schoonmaker</div><div class="player-pos">TE · Backup</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="roster-section">
+    <div class="roster-section-title">Defensive Line / EDGE</div>
+    <div class="player-grid">
+      <div class="player-card">
+        <div class="player-number">52</div>
+        <div><div class="player-name">Rashan Gary</div><div class="player-pos">EDGE · Starter</div><div class="player-note">🆕 Trade von GB</div></div>
+      </div>
+      <div class="player-card">
+        <div class="player-number">97</div>
+        <div><div class="player-name">Osa Odighizuwa</div><div class="player-pos">DT · Starter</div><div class="player-note">4-Jahr Extension</div></div>
+      </div>
+      <div class="player-card">
+        <div class="player-number">—</div>
+        <div><div class="player-name">Otito Ogbonnia</div><div class="player-pos">NT · 🆕 FA</div></div>
+      </div>
+      <div class="player-card">
+        <div class="player-number">—</div>
+        <div><div class="player-name">Donovan Ezeiruaku</div><div class="player-pos">EDGE · Rookie '25</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="roster-section">
+    <div class="roster-section-title">Linebacker</div>
+    <div class="player-grid">
+      <div class="player-card">
+        <div class="player-number">48</div>
+        <div><div class="player-name">James Houston</div><div class="player-pos">LB · Starter</div></div>
+      </div>
+      <div class="player-card">
+        <div class="player-number">—</div>
+        <div><div class="player-name">Kenneth Murray</div><div class="player-pos">LB · Starter</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="roster-section">
+    <div class="roster-section-title">Cornerback</div>
+    <div class="player-grid">
+      <div class="player-card">
+        <div class="player-number">—</div>
+        <div><div class="player-name">Shavon Revel Jr.</div><div class="player-pos">CB · Starter</div><div class="player-note">Zurück nach Verletzung</div></div>
+      </div>
+      <div class="player-card">
+        <div class="player-number">—</div>
+        <div><div class="player-name">Caelen Carson</div><div class="player-pos">CB · Starter</div></div>
+      </div>
+      <div class="player-card">
+        <div class="player-number">—</div>
+        <div><div class="player-name">Cobie Durant</div><div class="player-pos">CB · 🆕 FA</div></div>
+      </div>
+      <div class="player-card">
+        <div class="player-number">—</div>
+        <div><div class="player-name">Trevon Diggs</div><div class="player-pos">CB · Reserve</div><div class="player-note">Verletzungsrehab</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="roster-section">
+    <div class="roster-section-title">Safety</div>
+    <div class="player-grid">
+      <div class="player-card">
+        <div class="player-number">—</div>
+        <div><div class="player-name">Jalen Thompson</div><div class="player-pos">S · 🆕 FA</div></div>
+      </div>
+      <div class="player-card">
+        <div class="player-number">20</div>
+        <div><div class="player-name">Malik Hooker</div><div class="player-pos">S · Starter</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="roster-section">
+    <div class="roster-section-title">Special Teams</div>
+    <div class="player-grid">
+      <div class="player-card">
+        <div class="player-number">17</div>
+        <div><div class="player-name">Brandon Aubrey</div><div class="player-pos">K · Elite</div><div class="player-note">⭐ Top-Kicker NFL</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="roster-section">
+    <div class="roster-section-title" style="color:var(--silver-dim)">Notable Abgänge</div>
+    <div class="info-card">
+      <div class="departure-row"><span class="plr">Micah Parsons (LB)</span><span class="dest">→ Getradet (2 First-Round Picks)</span></div>
+      <div class="departure-row"><span class="plr">Zack Martin (OG)</span><span class="dest">→ Rücktritt nach 2024</span></div>
+      <div class="departure-row"><span class="plr">Rico Dowdle (RB)</span><span class="dest">→ Free Agency</span></div>
+      <div class="departure-row"><span class="plr">DeMarcus Lawrence (DE)</span><span class="dest">→ Seattle Seahawks</span></div>
+    </div>
+  </div>
+
+  <div class="roster-section">
+    <div class="roster-section-title">Coaching Staff</div>
+    <div class="info-card">
+      <div class="info-row"><span class="label">Head Coach</span><span class="value">Brian Schottenheimer</span></div>
+      <div class="info-row"><span class="label">Owner / GM</span><span class="value">Jerry Jones</span></div>
+      <div class="info-row"><span class="label">VP Player Personnel</span><span class="value">Will McClay</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- INFO -->
+<div class="page" id="page-info">
+  <div class="section-title" style="margin-top:18px">TEAM INFO</div>
+
+  <div class="info-card">
+    <h3>DALLAS COWBOYS</h3>
+    <div class="info-row"><span class="label">Gegründet</span><span class="value">1960</span></div>
+    <div class="info-row"><span class="label">Heimstadion</span><span class="value">AT&T Stadium, Arlington TX</span></div>
+    <div class="info-row"><span class="label">Kapazität</span><span class="value">100.240</span></div>
+    <div class="info-row"><span class="label">Division</span><span class="value">NFC East</span></div>
+    <div class="info-row"><span class="label">Super Bowls</span><span class="value" style="color:var(--silver-lt)">VI · XII · XXVII · XXVIII · XXX</span></div>
+    <div class="info-row"><span class="label">Franchise-Wert</span><span class="value">$10+ Mrd. (Wertvollste Franchise)</span></div>
+  </div>
+
+  <div class="info-card">
+    <h3>SAISON 2026</h3>
+    <div class="info-row"><span class="label">Opener</span><span class="value">13. Sep. @ New York Giants (SNF)</span></div>
+    <div class="info-row"><span class="label">Bye Week</span><span class="value">Week 14 (13. Dez.)</span></div>
+    <div class="info-row"><span class="label">Intl. Spiel</span><span class="value">27. Sep. vs. Baltimore (Rio 🇧🇷)</span></div>
+    <div class="info-row"><span class="label">Thanksgiving</span><span class="value">26. Nov. vs. Philadelphia Eagles</span></div>
+    <div class="info-row"><span class="label">Primetime</span><span class="value">6 Spiele (NBC · ESPN · Amazon)</span></div>
+    <div class="info-row"><span class="label">Head Coach</span><span class="value">Brian Schottenheimer (Year 2)</span></div>
+  </div>
+
+  <div class="info-card">
+    <h3>WICHTIGE SPIELE</h3>
+    <div class="info-row"><span class="label">Wk 1 · SNF</span><span class="value">@ Giants · 02:20 Uhr (NBC)</span></div>
+    <div class="info-row"><span class="label">Wk 3 · Intl.</span><span class="value">vs. Ravens in Rio · 22:25 Uhr (CBS)</span></div>
+    <div class="info-row"><span class="label">Wk 5 · TNF</span><span class="value">vs. Tampa Bay · 02:15 Uhr (Amazon)</span></div>
+    <div class="info-row"><span class="label">Wk 6 · SNF</span><span class="value">@ Green Bay · 02:20 Uhr (NBC)</span></div>
+    <div class="info-row"><span class="label">Wk 7 · MNF</span><span class="value">@ Philadelphia · 02:15 Uhr (ESPN)</span></div>
+    <div class="info-row"><span class="label">Wk 12 · Thanksgiving</span><span class="value">vs. Eagles · 22:30 Uhr (FOX)</span></div>
+    <div class="info-row"><span class="label">Wk 13 · MNF</span><span class="value">@ Seattle · 02:15 Uhr (ESPN)</span></div>
+    <div class="info-row"><span class="label">Wk 16 · SNF</span><span class="value">vs. Jacksonville · 02:20 Uhr (NBC)</span></div>
+  </div>
+
+  <div class="section-title">QUICK LINKS</div>
+  <div class="link-grid">
+    <a href="https://www.dallascowboys.com" target="_blank" class="link-btn">
+      <span class="icon">⭐</span><span class="title">Cowboys.com</span><span class="sub">Offizielle Site</span>
+    </a>
+    <a href="https://www.dallascowboys.com/tickets" target="_blank" class="link-btn">
+      <span class="icon">🎟️</span><span class="title">Tickets</span><span class="sub">AT&T Stadium</span>
+    </a>
+    <a href="https://www.espn.com/nfl/team/_/name/dal" target="_blank" class="link-btn">
+      <span class="icon">📊</span><span class="title">ESPN Stats</span><span class="sub">Statistiken</span>
+    </a>
+    <a href="https://shop.dallascowboys.com" target="_blank" class="link-btn">
+      <span class="icon">👕</span><span class="title">Shop</span><span class="sub">Cowboys Merch</span>
+    </a>
+  </div>
+
+  <div style="text-align:center;padding:16px 0 4px;font-size:0.62rem;color:rgba(134,147,151,0.2);letter-spacing:1px">
+    Dallas Cowboys Fan App 2026 · Unofficial · Alle Zeiten in MEZ/MESZ
+  </div>
+</div>
+
+<!-- ══ BOTTOM NAV ══ -->
+<nav class="bottom-nav">
+  <button class="nav-item active" id="nav-schedule" onclick="switchPage('schedule',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+    </svg>
+    <span class="nav-label">Spielplan</span>
+  </button>
+  <button class="nav-item" id="nav-news" onclick="switchPage('news',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/>
+    </svg>
+    <span class="nav-label">News</span>
+  </button>
+  <button class="nav-item" id="nav-history" onclick="switchPage('history',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+    </svg>
+    <span class="nav-label">Historie</span>
+  </button>
+  <button class="nav-item" id="nav-roster" onclick="switchPage('roster',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+    </svg>
+    <span class="nav-label">Kader</span>
+  </button>
+  <button class="nav-item" id="nav-info" onclick="switchPage('info',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+    </svg>
+    <span class="nav-label">Info</span>
+  </button>
+</nav>
+
+<script>
+// ══ SCHEDULE DATA ══
+const SCHEDULE = [
+  { week:1,  home:false, opp:"New York Giants",       short:"NYG", oppBg:"#0B2265", oppFg:"#A71930", date:"So., 13. Sep. 2026", timeET:"8:20p", timeDE:"02:20 Uhr*", net:"NBC",  special:"primetime", note:"SNF – Saisonöffner" },
+  { week:2,  home:true,  opp:"Washington Commanders", short:"WAS", oppBg:"#5A1414", oppFg:"#FFB612", date:"So., 20. Sep. 2026", timeET:"4:25p", timeDE:"22:25 Uhr",  net:"FOX",  special:"", note:"NFC East" },
+  { week:3,  home:true,  opp:"Baltimore Ravens",      short:"BAL", oppBg:"#241773", oppFg:"#9E7C0C", date:"So., 27. Sep. 2026", timeET:"4:25p", timeDE:"22:25 Uhr",  net:"CBS",  special:"intl", note:"🌍 Rio de Janeiro, Brasilien" },
+  { week:4,  home:false, opp:"Houston Texans",        short:"HOU", oppBg:"#03202F", oppFg:"#A71930", date:"So., 4. Okt. 2026",  timeET:"1:00p", timeDE:"19:00 Uhr",  net:"FOX",  special:"", note:"" },
+  { week:5,  home:true,  opp:"Tampa Bay Buccaneers",  short:"TB",  oppBg:"#D50A0A", oppFg:"#FF7900", date:"Do., 8. Okt. 2026",  timeET:"8:15p", timeDE:"02:15 Uhr*", net:"AMZ",  special:"primetime", note:"TNF – Amazon Prime" },
+  { week:6,  home:false, opp:"Green Bay Packers",     short:"GB",  oppBg:"#203731", oppFg:"#FFB612", date:"So., 18. Okt. 2026", timeET:"8:20p", timeDE:"02:20 Uhr*", net:"NBC",  special:"primetime", note:"SNF" },
+  { week:7,  home:false, opp:"Philadelphia Eagles",   short:"PHI", oppBg:"#004C54", oppFg:"#A5ACAF", date:"Mo., 26. Okt. 2026", timeET:"8:15p", timeDE:"02:15 Uhr*", net:"ESPN", special:"primetime", note:"MNF – NFC East Rivalry" },
+  { week:8,  home:true,  opp:"Arizona Cardinals",     short:"ARI", oppBg:"#97233F", oppFg:"#000", date:"So., 1. Nov. 2026",  timeET:"1:00p", timeDE:"19:00 Uhr",  net:"FOX",  special:"", note:"" },
+  { week:9,  home:false, opp:"Indianapolis Colts",    short:"IND", oppBg:"#002C5F", oppFg:"#A2AAAD", date:"So., 8. Nov. 2026",  timeET:"1:00p", timeDE:"19:00 Uhr",  net:"FOX",  special:"", note:"" },
+  { week:10, home:true,  opp:"San Francisco 49ers",   short:"SF",  oppBg:"#AA0000", oppFg:"#B3995D", date:"So., 15. Nov. 2026", timeET:"4:25p", timeDE:"22:25 Uhr",  net:"FOX",  special:"", note:"" },
+  { week:11, home:true,  opp:"Tennessee Titans",      short:"TEN", oppBg:"#0C2340", oppFg:"#4B92DB", date:"So., 22. Nov. 2026", timeET:"1:00p", timeDE:"19:00 Uhr",  net:"FOX",  special:"", note:"" },
+  { week:12, home:true,  opp:"Philadelphia Eagles",   short:"PHI", oppBg:"#004C54", oppFg:"#A5ACAF", date:"Do., 26. Nov. 2026", timeET:"4:30p", timeDE:"22:30 Uhr",  net:"FOX",  special:"thanksgiving", note:"🦃 Thanksgiving Day" },
+  { week:13, home:false, opp:"Seattle Seahawks",      short:"SEA", oppBg:"#002244", oppFg:"#69BE28", date:"Mo., 7. Dez. 2026",  timeET:"8:15p", timeDE:"02:15 Uhr*", net:"ESPN", special:"primetime", note:"MNF – Super Bowl Champ" },
+  { week:14, bye:true,   date:"13.–19. Dez. 2026" },
+  { week:15, home:false, opp:"Los Angeles Rams",      short:"LAR", oppBg:"#003594", oppFg:"#FFA300", date:"So., 20. Dez. 2026", timeET:"4:25p", timeDE:"22:25 Uhr",  net:"CBS",  special:"", note:"" },
+  { week:16, home:true,  opp:"Jacksonville Jaguars",  short:"JAX", oppBg:"#006778", oppFg:"#9F792C", date:"So., 27. Dez. 2026", timeET:"8:20p", timeDE:"02:20 Uhr*", net:"NBC",  special:"primetime", note:"SNF" },
+  { week:17, home:true,  opp:"New York Giants",       short:"NYG", oppBg:"#0B2265", oppFg:"#A71930", date:"So., 3. Jan. 2027",  timeET:"1:00p", timeDE:"19:00 Uhr",  net:"FOX",  special:"", note:"" },
+  { week:18, home:false, opp:"Washington Commanders", short:"WAS", oppBg:"#5A1414", oppFg:"#FFB612", date:"TBD, Jan. 2027",     timeET:"TBD",   timeDE:"TBD",         net:"TBD",  special:"", note:"Saisonfinal · NFC East" },
+];
+
+const NET_STYLES = {
+  NBC:  { bg:"#002060", fg:"#ffd700", label:"NBC"     },
+  FOX:  { bg:"#8b0000", fg:"#fff",    label:"FOX"     },
+  CBS:  { bg:"#003099", fg:"#69cfff", label:"CBS"     },
+  ESPN: { bg:"#c00",    fg:"#fff",    label:"ESPN"    },
+  AMZ:  { bg:"#0073bb", fg:"#fff",    label:"Amazon"  },
+  NFLN: { bg:"#002244", fg:"#B0B7BC", label:"NFL Net" },
+  TBD:  { bg:"#222",    fg:"#888",    label:"TBD"     },
+};
+
+// ══ BUILD SCHEDULE ══
+function buildSchedule() {
+  const chips = document.getElementById('weekChips');
+  const list  = document.getElementById('scheduleList');
+
+  let chipsHTML = '<button class="week-chip active" onclick="filterWeek(\'all\',this)">Alle</button>';
+  for (let w = 1; w <= 18; w++) chipsHTML += `<button class="week-chip" onclick="filterWeek(${w},this)">Wk ${w}</button>`;
+  chips.innerHTML = chipsHTML;
+
+  let html = '';
+  SCHEDULE.forEach(g => {
+    if (g.bye) {
+      html += `<div class="bye-card" data-week="${g.week}">
+        <div class="bye-text">★ BYE WEEK ${g.week} · ${g.date}</div>
+        <div style="font-size:0.7rem;color:var(--muted);margin-top:3px;font-family:'Rajdhani'">Keine Partie · AT&T Stadium ruht</div>
+      </div>`;
+      return;
+    }
+
+    const ha    = g.home ? 'home' : 'away';
+    const haCls = g.home ? 'ha-home' : 'ha-away';
+    const haLbl = g.home ? 'HOME' : 'AWAY';
+    const net   = NET_STYLES[g.net] || NET_STYLES.TBD;
+
+    let extraCls = '';
+    if (g.special === 'primetime') extraCls = ' primetime';
+    if (g.special === 'thanksgiving') extraCls = ' special-game';
+    if (g.special === 'intl') extraCls = ' intl-game';
+
+    let badge = '';
+    if (g.special === 'thanksgiving') badge = '<span class="special-badge sb-thanksgiving">🦃 Thanksgiving</span>';
+    else if (g.special === 'primetime') badge = '<span class="special-badge sb-primetime">★ Primetime</span>';
+    else if (g.special === 'intl') badge = '<span class="special-badge sb-intl">🌍 International</span>';
+
+    const note = g.note ? `<span style="font-size:0.62rem;color:var(--muted)">${g.note}</span>` : '';
+
+    html += `<div class="game-card ${ha}${extraCls}" data-week="${g.week}">
+      <div class="week-badge">
+        <span class="week-num">${g.week}</span>
+        <span class="week-lbl">WK</span>
+      </div>
+      <div class="game-info">
+        <div class="game-opponent">
+          <span class="${haCls}">${haLbl}</span>
+          ${g.opp} ${badge}
+        </div>
+        <div class="game-datetime">
+          <span>${g.date}</span>
+          <span>·</span>
+          <span class="time-de">🇩🇪 ${g.timeDE}</span>
+          ${note}
+        </div>
+      </div>
+      <div class="game-right">
+        <div class="game-network" style="background:${net.bg};color:${net.fg}">${net.label}</div>
+        <div class="game-time-et">${g.timeET} ET</div>
+      </div>
+    </div>`;
+  });
+
+  list.innerHTML = html;
+}
+
+function filterWeek(week, btn) {
+  document.querySelectorAll('.week-chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('#scheduleList > *').forEach(el => {
+    el.style.display = (week === 'all' || +el.dataset.week === week) ? '' : 'none';
+  });
+  btn.scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' });
+}
+
+// ══ COUNTDOWN ══
+function updateCountdown() {
+  const target = new Date(2026, 8, 14, 2, 20); // Sep 14 02:20 MEZ
+  const diff = target - new Date();
+  if (diff <= 0) { document.getElementById('countdownCard').style.display='none'; return; }
+  const d = Math.floor(diff/86400000);
+  const h = Math.floor((diff%86400000)/3600000);
+  const m = Math.floor((diff%3600000)/60000);
+  document.getElementById('cdDays').textContent  = String(d).padStart(2,'0');
+  document.getElementById('cdHours').textContent = String(h).padStart(2,'0');
+  document.getElementById('cdMins').textContent  = String(m).padStart(2,'0');
+}
+
+// ══ NEXT GAME ══
+function updateNextGame() {
+  const months = {Sep:8,Okt:9,Nov:10,Dez:11,Jan:0};
+  const now = new Date();
+  const next = SCHEDULE.find(g => {
+    if (g.bye || !g.date || g.date.startsWith('TBD')) return false;
+    const m = g.date.match(/(\d{1,2})\.\s(\w+)\.\s(\d{4})/);
+    if (!m) return false;
+    const day=+m[1], mon=months[m[2]], yr=+m[3];
+    let h=20,mi=0;
+    if (g.timeDE) { const t=g.timeDE.match(/(\d{2}):(\d{2})/); if(t){h=+t[1];mi=+t[2];} }
+    const d = new Date(yr, mon, h<6?day+1:day, h, mi);
+    return d > now;
+  });
+
+  if (!next) return;
+  document.getElementById('ngDate').textContent    = next.date;
+  document.getElementById('ngOppName').textContent = next.opp;
+  document.getElementById('ngLocation').textContent = next.home ? 'AT&T Stadium, Arlington TX' : 'Auswärtsspiel';
+  document.getElementById('ngTimeET').textContent  = next.timeET + ' ET';
+  document.getElementById('ngTimeDE').textContent  = next.timeDE + ' MEZ';
+  document.getElementById('ngNetwork').textContent = (NET_STYLES[next.net]||NET_STYLES.TBD).label;
+  document.getElementById('ngOppLogo').innerHTML   =
+    `<svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="28" fill="${next.oppBg}" stroke="${next.oppFg}" stroke-width="2"/>
+     <text x="30" y="37" text-anchor="middle" font-family="Arial Black" font-size="10" font-weight="900" fill="${next.oppFg}">${next.short}</text></svg>`;
+}
+
+// ══ NEWS — ESPN Public API ══
+const ESPN_COWBOYS_NEWS = 'https://site.api.espn.com/apis/site/v2/sports/football/nfl/news?team=dal&limit=15';
+let newsLoaded = false;
+
+async function loadNews() {
+  const container = document.getElementById('newsContainer');
+  if (newsLoaded) return;
+
+  try {
+    const res = await fetch(ESPN_COWBOYS_NEWS, { signal: AbortSignal.timeout(8000) });
+    if (!res.ok) throw new Error(res.status);
+    const data = await res.json();
+    const articles = data.articles || [];
+    if (!articles.length) throw new Error('empty');
+    newsLoaded = true;
+
+    let html = '';
+    articles.slice(0,12).forEach((a, i) => {
+      const title   = escHtml(a.headline || '');
+      const desc    = escHtml((a.description||'').slice(0,160));
+      const link    = a.links?.web?.href || '#';
+      const imgUrl  = a.images?.[0]?.url || '';
+      const date    = a.published ? new Date(a.published).toLocaleDateString('de-DE',{day:'numeric',month:'short',year:'numeric'}) : '';
+      const cls     = i===0 ? 'news-card featured' : 'news-card';
+      const img     = imgUrl ? `<img class="news-img" src="${imgUrl}" alt="" loading="lazy" onerror="this.style.display='none'">` : (i===0?'<div class="news-img-placeholder">★</div>':'');
+
+      html += `<a href="${link}" target="_blank" rel="noopener" class="${cls}">
+        ${img}
+        <div class="news-body">
+          <div class="news-source">ESPN · Cowboys</div>
+          <div class="news-title">${title}</div>
+          ${desc?`<div class="news-desc">${desc}</div>`:''}
+          ${date?`<div class="news-date">${date}</div>`:''}
+        </div>
+      </a>`;
+    });
+
+    container.innerHTML = html || renderFallback();
+  } catch(e) {
+    container.innerHTML = renderFallback();
+  }
+}
+
+function renderFallback() {
+  return `<div class="news-error">
+    <div style="font-size:2rem;margin-bottom:10px">★</div>
+    <p>News konnten nicht geladen werden.</p>
+    <button class="refresh-btn" onclick="newsLoaded=false;loadNews()">Erneut versuchen</button>
+    <div style="margin-top:16px">
+      <a href="https://www.dallascowboys.com/news" target="_blank" style="color:var(--silver-lt);font-family:'Teko';font-size:1rem;letter-spacing:1px;text-decoration:none">→ dallascowboys.com/news</a>
+    </div>
+  </div>`;
+}
+
+function escHtml(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ══ NAVIGATION ══
+function switchPage(page, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  btn.classList.add('active');
+  if (page==='news' && !newsLoaded) loadNews();
+  window.scrollTo(0,0);
+}
+
+// ══ INIT ══
+buildSchedule();
+updateNextGame();
+updateCountdown();
+setInterval(updateCountdown, 30000);
+</script>
+</body>
+</html>
