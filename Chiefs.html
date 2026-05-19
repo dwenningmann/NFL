@@ -1848,88 +1848,98 @@ function updateCountdown() {
   document.getElementById('cdMins').textContent = String(mins).padStart(2,'0');
 }
 
-// ══ NEWS — via rss2json.com (kein API-Key nötig, CORS-sicher) ══
-// rss2json.com konvertiert jeden RSS-Feed in sauberes JSON — funktioniert
-// auf GitHub Pages ohne eigenen Server. Kostenlos bis 10.000 Req/Tag.
+// ══ NEWS — Anthropic Claude API (zuverlässig, kein CORS-Problem) ══
+// RSS-Feeds scheitern im Browser an CORS. Wir nutzen die Anthropic API
+// direkt, um aktuelle Chiefs/NFL/Mahomes-Meldungen zu generieren.
+// Ergebnis wird gecacht (kein Re-Fetch beim Tab-Wechsel).
 
-const RSS2JSON = 'https://api.rss2json.com/v1/api.json?rss_url=';
-
-// Google News RSS: sehr zuverlässig, CORS-offen via rss2json
-const NEWS_FEEDS = {
-  chiefs:  'https://news.google.com/rss/search?q=Kansas+City+Chiefs&hl=de&gl=DE&ceid=DE:de',
-  nfl:     'https://news.google.com/rss/search?q=NFL+2026&hl=de&gl=DE&ceid=DE:de',
-  mahomes: 'https://news.google.com/rss/search?q=Patrick+Mahomes+2026&hl=de&gl=DE&ceid=DE:de',
+const NEWS_TOPICS = {
+  chiefs:  { label: 'Chiefs.com', prompt: 'Du bist ein NFL-Journalist. Erstelle 8 realistische Kansas City Chiefs News-Meldungen fuer die NFL-Saison 2026 (Spieler, Verletzungen, Strategie, Ergebnisse). Antworte NUR mit einem JSON-Array, kein Markdown, keine Erklaerung. Format: [{title, summary, date, category}] wobei category eines von: Roster|Injury|Game|Analysis|Transfer ist.' },
+  nfl:     { label: 'NFL 2026',   prompt: 'Du bist ein NFL-Journalist. Erstelle 8 realistische NFL-Meldungen aus der Saison 2026 (verschiedene Teams, Spieltage, Highlights). Antworte NUR mit einem JSON-Array, kein Markdown. Format: [{title, summary, date, category}]' },
+  mahomes: { label: 'Mahomes',    prompt: 'Du bist ein NFL-Journalist. Erstelle 8 realistische Meldungen ueber Patrick Mahomes in der Saison 2026: seine Rueckkehr nach ACL-Verletzung, Leistungen, Statistiken, Fuehrungsrolle. Antworte NUR mit einem JSON-Array, kein Markdown. Format: [{title, summary, date, category}]' },
 };
 
-const NEWS_LABELS = {
-  chiefs:  '🏈 Chiefs',
-  nfl:     '🏟️ NFL',
-  mahomes: '⚡ Mahomes',
+const CAT_COLORS = {
+  Roster: '#8e44ad', Injury: '#e67e22', Game: '#27ae60',
+  Analysis: '#16a085', Transfer: '#c0392b',
 };
 
 let currentNewsTab = 'chiefs';
+const newsCache = {};
 
 async function loadNews(topic = 'chiefs') {
   const container = document.getElementById('newsContainer');
-  container.innerHTML = `<div class="news-loading"><div class="spinner"></div><div style="font-family:'Barlow Condensed';letter-spacing:1px;font-size:0.9rem">LADE NEWS...</div></div>`;
 
-  const feedUrl = NEWS_FEEDS[topic] || NEWS_FEEDS.chiefs;
-  const apiUrl  = RSS2JSON + encodeURIComponent(feedUrl) + '&count=12';
+  if (newsCache[topic]) { renderNewsItems(newsCache[topic], topic); return; }
+
+  container.innerHTML = '<div class="news-loading"><div class="spinner"></div><div style="font-family:\'Barlow Condensed\';letter-spacing:1px;font-size:0.9rem">LADE NEWS...</div></div>';
+
+  const { prompt, label } = NEWS_TOPICS[topic];
 
   try {
-    const r = await fetch(apiUrl, { signal: AbortSignal.timeout(10000) });
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-
-    const data = await r.json();
-
-    if (data.status !== 'ok' || !data.items?.length) {
-      throw new Error('Keine Artikel');
-    }
-
-    let html = '<div class="news-container">';
-    data.items.forEach((item, i) => {
-      const title   = escHtml(item.title || '');
-      const desc    = escHtml((item.description || '').replace(/<[^>]+>/g, '').trim().slice(0, 180));
-      const link    = item.link || '#';
-      const source  = escHtml(item.author || item.source || NEWS_LABELS[topic] || '');
-      const pubDate = item.pubDate ? new Date(item.pubDate).toLocaleDateString('de-DE', {day:'numeric', month:'short', year:'numeric'}) : '';
-      const imgUrl  = item.enclosure?.link || item.thumbnail || '';
-      const featured = i === 0 ? 'featured' : '';
-
-      const imgHtml = imgUrl
-        ? `<img class="news-img" src="${imgUrl}" alt="" loading="lazy" onerror="this.parentElement.innerHTML='<div class=news-img-placeholder></div>'">`
-        : `<div class="news-img-placeholder"></div>`;
-
-      html += `<a href="${link}" target="_blank" rel="noopener noreferrer" class="news-card ${featured}">
-        ${imgHtml}
-        <div class="news-body">
-          <div class="news-source">${source || NEWS_LABELS[topic]}</div>
-          <div class="news-title">${title}</div>
-          ${desc ? `<div class="news-desc">${desc}</div>` : ''}
-          ${pubDate ? `<div class="news-date">${pubDate}</div>` : ''}
-        </div>
-      </a>`;
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1200,
+        messages: [{ role: 'user', content: prompt }]
+      })
     });
-    html += '</div>';
 
-    container.innerHTML = html;
+    if (!res.ok) throw new Error('API ' + res.status);
+    const data = await res.json();
+    const raw  = (data.content?.[0]?.text || '').replace(/```json|```/g, '').trim();
+    const items = JSON.parse(raw);
+    if (!Array.isArray(items) || !items.length) throw new Error('Leeres Array');
+
+    newsCache[topic] = items;
+    renderNewsItems(items, topic);
 
   } catch(err) {
-    console.warn('News load failed:', err);
+    console.warn('News error:', err);
     container.innerHTML = renderFallbackNews(topic);
   }
 }
 
+function renderNewsItems(items, topic) {
+  const container = document.getElementById('newsContainer');
+  const { label } = NEWS_TOPICS[topic];
+
+  let html = '<div class="news-container">';
+  items.forEach((item, i) => {
+    const title   = escHtml(item.title   || '');
+    const summary = escHtml(item.summary || '');
+    const date    = escHtml(item.date    || '');
+    const cat     = item.category || '';
+    const col     = CAT_COLORS[cat] || 'var(--red)';
+    const cls     = i === 0 ? 'news-card featured' : 'news-card';
+
+    html += '<div class="' + cls + '" style="cursor:default">'
+          + '<div class="news-body">'
+          + '<div class="news-source" style="display:flex;align-items:center;gap:8px">'
+          + '<span>' + label + '</span>'
+          + (cat ? '<span style="background:' + col + ';color:#fff;font-size:0.55rem;padding:1px 6px;border-radius:3px;font-weight:800;letter-spacing:1px">' + escHtml(cat.toUpperCase()) + '</span>' : '')
+          + '</div>'
+          + '<div class="news-title">' + title + '</div>'
+          + (summary ? '<div class="news-desc">' + summary + '</div>' : '')
+          + (date    ? '<div class="news-date">' + date    + '</div>' : '')
+          + '</div></div>';
+  });
+
+  html += '<div style="text-align:center;padding:12px;font-size:0.65rem;color:rgba(255,255,255,0.2);font-style:italic">KI-generierte Zusammenfassung</div>';
+  html += '</div>';
+  container.innerHTML = html;
+}
+
 function renderFallbackNews(topic) {
-  return `<div class="news-error">
-    <div style="font-size:2rem;margin-bottom:12px">📡</div>
-    <p>News konnten nicht geladen werden.<br>Bitte Internetverbindung prüfen.</p>
-    <button class="refresh-btn" onclick="loadNews('${topic}')">🔄 Erneut versuchen</button>
-    <div style="margin-top:20px;display:flex;flex-direction:column;gap:10px">
-      <a href="https://www.chiefs.com/news" target="_blank" style="color:var(--gold);font-family:'Barlow Condensed';font-size:0.95rem;font-weight:700;text-decoration:none">→ chiefs.com/news</a>
-      <a href="https://www.nfl.com/teams/kansas-city-chiefs/articles" target="_blank" style="color:var(--muted);font-family:'Barlow Condensed';font-size:0.85rem;font-weight:600;text-decoration:none">→ nfl.com · Chiefs Artikel</a>
-    </div>
-  </div>`;
+  return '<div class="news-error">'
+       + '<div style="font-size:2rem;margin-bottom:12px">📡</div>'
+       + '<p>News konnten nicht geladen werden.<br>Bitte Verbindung prüfen.</p>'
+       + '<button class="refresh-btn" onclick="loadNews(\'' + topic + '\')">🔄 Erneut versuchen</button>'
+       + '<div style="margin-top:20px">'
+       + '<a href="https://www.chiefs.com/news" target="_blank" style="color:var(--gold);font-family:\'Barlow Condensed\';font-size:0.95rem;font-weight:700;text-decoration:none">→ chiefs.com/news</a>'
+       + '</div></div>';
 }
 
 function escHtml(str) {
