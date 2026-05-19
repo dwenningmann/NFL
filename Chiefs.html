@@ -1848,20 +1848,15 @@ function updateCountdown() {
   document.getElementById('cdMins').textContent = String(mins).padStart(2,'0');
 }
 
-// ══ NEWS — Anthropic Claude API (zuverlässig, kein CORS-Problem) ══
-// RSS-Feeds scheitern im Browser an CORS. Wir nutzen die Anthropic API
-// direkt, um aktuelle Chiefs/NFL/Mahomes-Meldungen zu generieren.
-// Ergebnis wird gecacht (kein Re-Fetch beim Tab-Wechsel).
+// ══ NEWS — ESPN Public API + Static Fallback ══
+// Die Anthropic API und RSS-Feeds sind von GitHub Pages aus CORS-gesperrt.
+// ESPN hat eine öffentliche JSON-API mit CORS-Headern die von Browsern
+// direkt aufgerufen werden darf — perfekt für Static Sites.
 
-const NEWS_TOPICS = {
-  chiefs:  { label: 'Chiefs.com', prompt: 'Du bist ein NFL-Journalist. Erstelle 8 realistische Kansas City Chiefs News-Meldungen fuer die NFL-Saison 2026 (Spieler, Verletzungen, Strategie, Ergebnisse). Antworte NUR mit einem JSON-Array, kein Markdown, keine Erklaerung. Format: [{title, summary, date, category}] wobei category eines von: Roster|Injury|Game|Analysis|Transfer ist.' },
-  nfl:     { label: 'NFL 2026',   prompt: 'Du bist ein NFL-Journalist. Erstelle 8 realistische NFL-Meldungen aus der Saison 2026 (verschiedene Teams, Spieltage, Highlights). Antworte NUR mit einem JSON-Array, kein Markdown. Format: [{title, summary, date, category}]' },
-  mahomes: { label: 'Mahomes',    prompt: 'Du bist ein NFL-Journalist. Erstelle 8 realistische Meldungen ueber Patrick Mahomes in der Saison 2026: seine Rueckkehr nach ACL-Verletzung, Leistungen, Statistiken, Fuehrungsrolle. Antworte NUR mit einem JSON-Array, kein Markdown. Format: [{title, summary, date, category}]' },
-};
-
-const CAT_COLORS = {
-  Roster: '#8e44ad', Injury: '#e67e22', Game: '#27ae60',
-  Analysis: '#16a085', Transfer: '#c0392b',
+const ESPN_ENDPOINTS = {
+  chiefs:  'https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/kc/news?limit=12',
+  nfl:     'https://site.api.espn.com/apis/site/v2/sports/football/nfl/news?limit=12',
+  mahomes: 'https://site.api.espn.com/apis/common/v3/sports/football/nfl/athletes/3139477/news?limit=12',
 };
 
 let currentNewsTab = 'chiefs';
@@ -1872,74 +1867,84 @@ async function loadNews(topic = 'chiefs') {
 
   if (newsCache[topic]) { renderNewsItems(newsCache[topic], topic); return; }
 
-  container.innerHTML = '<div class="news-loading"><div class="spinner"></div><div style="font-family:\'Barlow Condensed\';letter-spacing:1px;font-size:0.9rem">LADE NEWS...</div></div>';
-
-  const { prompt, label } = NEWS_TOPICS[topic];
+  container.innerHTML = '<div class="news-loading"><div class="spinner"></div>'
+    + '<div style="font-family:\'Barlow Condensed\';letter-spacing:1px;font-size:0.9rem">LADE NEWS...</div></div>';
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1200,
-        messages: [{ role: 'user', content: prompt }]
-      })
-    });
-
-    if (!res.ok) throw new Error('API ' + res.status);
+    const res = await fetch(ESPN_ENDPOINTS[topic], { signal: AbortSignal.timeout(8000) });
+    if (!res.ok) throw new Error('ESPN ' + res.status);
     const data = await res.json();
-    const raw  = (data.content?.[0]?.text || '').replace(/```json|```/g, '').trim();
-    const items = JSON.parse(raw);
-    if (!Array.isArray(items) || !items.length) throw new Error('Leeres Array');
 
-    newsCache[topic] = items;
-    renderNewsItems(items, topic);
+    // ESPN returns { articles: [...] }
+    const articles = data.articles || [];
+    if (!articles.length) throw new Error('Keine Artikel');
+
+    newsCache[topic] = articles;
+    renderNewsItems(articles, topic);
 
   } catch(err) {
-    console.warn('News error:', err);
+    console.warn('ESPN News error:', err);
     container.innerHTML = renderFallbackNews(topic);
   }
 }
 
-function renderNewsItems(items, topic) {
+function renderNewsItems(articles, topic) {
   const container = document.getElementById('newsContainer');
-  const { label } = NEWS_TOPICS[topic];
+  const labels = { chiefs: 'ESPN · Chiefs', nfl: 'ESPN · NFL', mahomes: 'ESPN · Mahomes' };
+  const label = labels[topic] || 'ESPN';
 
   let html = '<div class="news-container">';
-  items.forEach((item, i) => {
-    const title   = escHtml(item.title   || '');
-    const summary = escHtml(item.summary || '');
-    const date    = escHtml(item.date    || '');
-    const cat     = item.category || '';
-    const col     = CAT_COLORS[cat] || 'var(--red)';
-    const cls     = i === 0 ? 'news-card featured' : 'news-card';
 
-    html += '<div class="' + cls + '" style="cursor:default">'
+  articles.slice(0, 10).forEach((a, i) => {
+    const title    = escHtml(a.headline || a.title || '');
+    const desc     = escHtml((a.description || a.summary || '').slice(0, 180));
+    const link     = a.links?.web?.href || a.link || '#';
+    const imgUrl   = a.images?.[0]?.url || '';
+    const pubDate  = a.published ? new Date(a.published).toLocaleDateString('de-DE',
+      {day:'numeric', month:'short', year:'numeric'}) : '';
+    const cats     = (a.categories || []).map(c => c.description || c.type).filter(Boolean).slice(0,1);
+    const cat      = cats[0] || '';
+    const featured = i === 0 ? 'featured' : '';
+
+    const img = imgUrl
+      ? '<img class="news-img" src="' + imgUrl + '" alt="" loading="lazy" onerror="this.style.display=\'none\'">'
+      : (i === 0 ? '<div class="news-img-placeholder"></div>' : '');
+
+    html += '<a href="' + link + '" target="_blank" rel="noopener" class="news-card ' + featured + '">'
+          + img
           + '<div class="news-body">'
-          + '<div class="news-source" style="display:flex;align-items:center;gap:8px">'
-          + '<span>' + label + '</span>'
-          + (cat ? '<span style="background:' + col + ';color:#fff;font-size:0.55rem;padding:1px 6px;border-radius:3px;font-weight:800;letter-spacing:1px">' + escHtml(cat.toUpperCase()) + '</span>' : '')
+          + '<div class="news-source">' + escHtml(label)
+          + (cat ? ' <span style="opacity:.6;font-size:.6rem">· ' + escHtml(cat) + '</span>' : '')
           + '</div>'
           + '<div class="news-title">' + title + '</div>'
-          + (summary ? '<div class="news-desc">' + summary + '</div>' : '')
-          + (date    ? '<div class="news-date">' + date    + '</div>' : '')
-          + '</div></div>';
+          + (desc    ? '<div class="news-desc">'  + desc    + '</div>' : '')
+          + (pubDate ? '<div class="news-date">' + pubDate + '</div>' : '')
+          + '</div></a>';
   });
 
-  html += '<div style="text-align:center;padding:12px;font-size:0.65rem;color:rgba(255,255,255,0.2);font-style:italic">KI-generierte Zusammenfassung</div>';
   html += '</div>';
   container.innerHTML = html;
 }
 
 function renderFallbackNews(topic) {
+  // ESPN nicht erreichbar → direkte Links als Fallback
+  const links = [
+    { label: '🏈 Chiefs News', url: 'https://www.chiefs.com/news' },
+    { label: '📺 ESPN · Chiefs', url: 'https://www.espn.com/nfl/team/_/name/kc' },
+    { label: '🏟️ NFL.com News', url: 'https://www.nfl.com/teams/kansas-city-chiefs/articles' },
+    { label: '⚡ Mahomes News', url: 'https://www.espn.com/nfl/player/_/id/3139477' },
+  ];
+
+  let linksHtml = links.map(l =>
+    '<a href="' + l.url + '" target="_blank" class="link-btn" style="width:100%">'
+    + '<span>' + l.label + '</span></a>'
+  ).join('');
+
   return '<div class="news-error">'
-       + '<div style="font-size:2rem;margin-bottom:12px">📡</div>'
-       + '<p>News konnten nicht geladen werden.<br>Bitte Verbindung prüfen.</p>'
-       + '<button class="refresh-btn" onclick="loadNews(\'' + topic + '\')">🔄 Erneut versuchen</button>'
-       + '<div style="margin-top:20px">'
-       + '<a href="https://www.chiefs.com/news" target="_blank" style="color:var(--gold);font-family:\'Barlow Condensed\';font-size:0.95rem;font-weight:700;text-decoration:none">→ chiefs.com/news</a>'
-       + '</div></div>';
+    + '<div style="font-size:2.5rem;margin-bottom:10px">📡</div>'
+    + '<p style="margin-bottom:16px">Direktlinks zu den Quellen:</p>'
+    + '<div style="display:flex;flex-direction:column;gap:8px">' + linksHtml + '</div>'
+    + '</div>';
 }
 
 function escHtml(str) {
